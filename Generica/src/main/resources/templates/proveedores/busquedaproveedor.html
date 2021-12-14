@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <title>Busqueda</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
+    <body>
+        <div class="container">
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                <a th:href="@{/home}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <i class="fa-solid fa-store" style="font-size: 40px;"></i>
+                    <span class="fs-4 m"> Tienda Generica</span>
+                </a>
+
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a th:href="@{/home}" class="nav-link"> <i class="fa-solid fa-house-chimney-user"></i> Home</a></li>
+                    <li class="nav-item"><a th:href="@{/usuarios}" class="nav-link"><i class="fa-solid fa-users"></i> Usuarios</a></li>
+                    <li class="nav-item"><a th:href="@{/clientes}" class="nav-link"><i class="fa-solid fa-people-arrows-left-right"></i> Clientes</a></li>
+                    <li class="nav-item"><a th:href="@{/proveedores}" class="nav-link active" aria-current="page"><i class="fa-solid fa-users-gear"></i> Proveedores</a></li>
+                    <li class="nav-item"><a th:href="@{/productos}" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> Productos</a></li>
+                    <li><form sec:authorize="isAuthenticated()" class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
+                            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">
+                                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                            </button>
+                        </form></li>
+                </ul>
+            </header>
+            <main>
+                <div class="container overflow-hidden">
+                    <div class="row gy-2">
+                        <div class="col-3">
+                            <h2>Agregar Proveedor:</h2>
+                        </div>
+                        <div class="col-5">
+                            <h2>Buscar Por NIT:</h2>
+                        </div>
+                        <div class="col-4">
+                            <h2>Listar todos los proveedores:</h2>
+                        </div>
+                        <div class="col-3">
+                            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/registro_proveedor}">
+                                <button class="btn btn-outline-success btn-lg">
+                                    Crear proveedor <i class="fa-solid fa-user-plus"></i></button></a>
+                        </div>
+                        <div class="col-5">
+                            <form th:action="@{/buscar_cliente}">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="bccedula" name="bccedula" placeholder="Ingrese la cedula" required>
+                                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar <i class="fas fa-search"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-4">
+                            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/proveedores}">
+                                <button class="btn btn-outline-success btn-lg">
+                                    Listar Proveedores: <i class="fas fa-list-alt"></i></button></a>
+                        </div>
+                    </div>
+                </div>
+                <h2 class="mt-5 text-center">Lista de Proveedores</h2>
+                <hr>
+                <table class="table text-center mt-3">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre Completo</th>
+                            <th scope="col">NIT</th>
+                            <th scope="col">Direccion</th>
+                            <th scope="col">Telefono</th>
+                            <th scope="col">Ciudad</th>
+                            <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Editar</th>
+                            <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="persona: ${personas}">
+                            <td th:text="${persona.nombre}"></td>
+                            <td th:text="${persona.nit}"></td>
+                            <td th:text="${persona.direccion}"></td>
+                            <td th:text="${persona.telefono}"></td>
+                            <td th:text="${persona.ciudad}"></td>
+                            <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{'/editar_proveedor/' + ${persona.id}}"><button class="btn btn-outline-warning"><i class="far fa-edit"></i></button></a></td>
+                            <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{'/borrar_proveedor/' + ${persona.id}}"><button class="btn btn-outline-danger"><i class="far fa-trash-alt"></i></button></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </main>
+        </div>
+    </body>
+</html>
