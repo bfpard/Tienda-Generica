@@ -1,4 +1,4 @@
-/***********************************    PROYECTO HECHO EN MYSQL, SPRING BOOT Y THYMELEAF    ***********************************\
+/***********************************    PROYECTO HECHO EN MYSQL, SPRING BOOT Y THYMELEAFv1.0    ***********************************\
 
 	PARA INICIAR ABRIR EL PROYECTO EN NEATBEANS O ECLIPSE Y DAR EL BUILD AL PROYECTO PARA QUE DESCARGUE LAS 
 	LIBRERIAS NECESARIAS.
